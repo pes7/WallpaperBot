@@ -148,7 +148,7 @@ bot.command("bot_stop", (ctx) =>{
 })
 
 bot.start((ctx) => {
-  
+  ctx.reply('This wallpaper Bot\nPowered by: Powered By Wallpaper Abyss');
 })
 
 bot.help((ctx) => ctx.reply(`${_helpCommands}`))
