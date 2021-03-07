@@ -4,8 +4,6 @@ const { log } = require('console');
 const arGs = require('./commandArgs');
 const MongoClient = require("mongodb").MongoClient;
 const request = require('request');
-const { brotliDecompress } = require('zlib');
-const { COPYFILE_FICLONE } = require('constants');
 
 const _DEBUG = true;
 
@@ -13,7 +11,7 @@ const token = "1647467570:AAFOOsYoHOKICP6PoWz0iF201pCnRaDjsak";
 const bot = new Telegraf(token)
 
 const _setting = { useUnifiedTopology: true,connectTimeoutMS: 30000,keepAlive: 1 };
-const _url = 'mongodb://root:password@localhost:27017/';
+const _url = 'mongodb://root:password@localhost:27018/';
 const _DB = "WabboBot";
 const _WallpaperTable = 'WallpaperPosted';
 
@@ -94,9 +92,9 @@ class dbWork {
 
 bot.use(arGs());
 
-const cat = "Anime";
-bot.command("test", (ctx) => {
-  request('http://wall.alphacoders.com/api2.0/get.php?method=highest_rated&page=1&info_level=2&page=2', { json: true }, (err, res, body) => {
+const cat = "Anime";//https://wall.alphacoders.com/api2.0/get.php?auth=17900fc9b6f655f9d9e39a96a256fcd2&method=newest&page=1&info_level=2&category=Anime&tid=418
+bot.command(["t","test"], (ctx) => {
+  request('https://wall.alphacoders.com/api2.0/get.php?auth=17900fc9b6f655f9d9e39a96a256fcd2&method=random&info_level=2&category=Anime', { json: true }, (err, res, body) => {
   if (err) { return console.log(err); }
   if (body.success == true)
     {
@@ -114,6 +112,7 @@ function cycle(wallpepers, ctx){
         if(resp === null){
           Wallpaper.insertWallpaper(o);
           ctx.reply(o.url_image)
+          cycle(wallpepers, ctx)
         }else{
           cycle(wallpepers, ctx)
         }
