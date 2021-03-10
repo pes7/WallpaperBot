@@ -1,4 +1,3 @@
-const schedule = require('node-schedule');
 const { Markup,Telegraf } = require('telegraf')
 const { log } = require('console');
 const arGs = require('./commandArgs');
@@ -159,8 +158,6 @@ bot.command("bot_stop", (ctx) =>{
     }
   }else{ctx.reply('Auch error!');}
 })
-
-bot.help((ctx) => ctx.reply(`${_helpCommands}`))
 
 dbWork.createDBandTABLE();
 bot.launch()
