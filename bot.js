@@ -11,12 +11,12 @@ const token = "1647467570:AAFOOsYoHOKICP6PoWz0iF201pCnRaDjsak";
 const bot = new Telegraf(token)
 
 const _setting = { useUnifiedTopology: true,connectTimeoutMS: 30000,keepAlive: 1 };
-const _url = 'mongodb://root:password@localhost:27018/';
+const _url = 'mongodb://root:password@WallPmongo:27019';
 const _DB = "WabboBot";
 const _WallpaperTable = 'WallpaperPosted';
 
-const startedThread = 0;
-const _time_out = 60;
+var startedThread = 0;
+const _time_out = 120;
 const _pass = 8912;
 var runtime = 0;
 
@@ -90,29 +90,34 @@ class dbWork {
   }
 }
 
-bot.use(arGs());
-
-const cat = "Anime";//https://wall.alphacoders.com/api2.0/get.php?auth=17900fc9b6f655f9d9e39a96a256fcd2&method=newest&page=1&info_level=2&category=Anime&tid=418
-bot.command(["t","test"], (ctx) => {
+bot.command("test", (ctx)=>{
   request('https://wall.alphacoders.com/api2.0/get.php?auth=17900fc9b6f655f9d9e39a96a256fcd2&method=random&info_level=2&category=Anime', { json: true }, (err, res, body) => {
-  if (err) { return console.log(err); }
-  if (body.success == true)
-    {
-      cycle(body.wallpapers, ctx);
-    }
-  });
+    if (err) { return console.log(err); }
+    if (body.success == true)
+      {
+        console.log(body.wallpapers);
+      }
+    });
 })
 
+bot.use(arGs());
 function cycle(wallpepers, ctx){
   if(wallpepers.length > 0)
   {
     var o = wallpepers.pop();
-    if(cat === o.category){
+    if("Anime" === o.category){
       Wallpaper.getWallpaper(o.id,(resp)=>{
         if(resp === null){
           Wallpaper.insertWallpaper(o);
-          ctx.reply(o.url_image)
-          cycle(wallpepers, ctx)
+          var img = o.url_image;
+          var thm = o.url_thumb;
+          var id = o.id
+          bot.telegram.sendPhoto("@animeWallpappe",thm,{
+            caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nSource: ${img}`,
+          });
+          //bot.telegram.sendMessage("@animeWallpappe","");
+          //ctx.reply(o.url_image)
+          //cycle(wallpepers, ctx)
         }else{
           cycle(wallpepers, ctx)
         }
@@ -122,18 +127,27 @@ function cycle(wallpepers, ctx){
 }
 
 bot.command("bot_start", (ctx) => {
-  if(startedThread == 0){
-    var _time_pass = 0;
-    ctx.reply('Bot started!');
-    startedThread = setInterval(()=>{
-      _time_pass++;
-      runtime++;
-      if(_time_pass >= _time_out){
-        _time_pass = 0;
-
-      }
-    },1000)
-  }
+  var pass = ctx.state.command.args[0];
+  if(pass == _pass){
+    if(startedThread == 0){
+      var _time_pass = 0;
+      ctx.reply('Bot started!');
+      startedThread = setInterval(()=>{
+        _time_pass++;
+        runtime++;
+        if(_time_pass >= _time_out){
+          _time_pass = 0;
+          request('https://wall.alphacoders.com/api2.0/get.php?auth=17900fc9b6f655f9d9e39a96a256fcd2&method=random&info_level=2&category=Anime', { json: true }, (err, res, body) => {
+            if (err) { return console.log(err); }
+            if (body.success == true)
+              {
+                cycle(body.wallpapers, ctx);
+              }
+            });
+        }
+      },1000)
+    }
+  }else{ctx.reply('Auch error!');}
 })
 
 bot.command("bot_stop", (ctx) =>{
@@ -144,10 +158,6 @@ bot.command("bot_stop", (ctx) =>{
       ctx.reply('Bot stoped!');
     }
   }else{ctx.reply('Auch error!');}
-})
-
-bot.start((ctx) => {
-  ctx.reply('This wallpaper Bot\nPowered by: Powered By Wallpaper Abyss');
 })
 
 bot.help((ctx) => ctx.reply(`${_helpCommands}`))
