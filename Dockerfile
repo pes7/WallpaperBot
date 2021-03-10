@@ -1,5 +1,5 @@
  FROM node:15-alpine
- WORKDIR /
+ WORKDIR /WallpaperBot
  COPY . .
  RUN yarn install --production
  CMD ["node", "bot.js"]

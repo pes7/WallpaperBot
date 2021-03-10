@@ -1,0 +1,14 @@
+{
+  "name": "wallpap",
+  "version": "1.0.0",
+  "description": "Wallpap bot",
+  "author": "Nazar Ukolov <ukolovnazar@gmail.com>",
+  "main": "bot.js",
+  "scripts": {
+    "start": "bot.js"
+  },
+  "dependencies": {
+    "mongodb": "^3.6.3",
+    "telegraf": "4.0.2"
+  }
+}
