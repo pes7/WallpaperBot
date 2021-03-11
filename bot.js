@@ -10,7 +10,7 @@ const token = "1647467570:AAFOOsYoHOKICP6PoWz0iF201pCnRaDjsak";
 const bot = new Telegraf(token)
 
 const _setting = { useUnifiedTopology: true,connectTimeoutMS: 30000,keepAlive: 1 };
-const _url = 'mongodb://root:password@mongor:27019';
+const _url = 'mongodb://root:password@mongor:27019/';
 const _DB = "WabboBot";
 const _WallpaperTable = 'WallpaperPosted';
 
@@ -76,6 +76,7 @@ class dbWork {
   static creatTable(table, json = undefined, clb = undefined){
     console.log(`Check ${table}`)
     const client = new MongoClient(_url,_setting);
+    console.log(client)
     client.connect(function(err) {
       if (err) { console.log(`Database ${_DB} not EXIST!!! Create IT NOW!!!!`); return false; };
       var db = client.db(_DB);
