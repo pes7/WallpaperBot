@@ -1,12 +1,12 @@
 version: '3.7'
 volumes:
-    mongo1_data:
+    mongo_data:
 
 services:
 
-  mongo1:
+  mongoR:
     image: mongo
-    container_name: mongo1
+    container_name: mongoR
     restart: always
     ports:
       - 27019:27017
