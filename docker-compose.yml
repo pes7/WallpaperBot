@@ -6,7 +6,7 @@ services:
 
   mongoR:
     image: mongo
-    container_name: mongoR
+    container_name: mongor
     restart: always
     ports:
       - 27019:27017
@@ -17,5 +17,5 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: password
   bot:
     image: nazarpes7/wallpap
-    container_name: WallPaperBot
+    container_name: wallpapbot
     restart: always
