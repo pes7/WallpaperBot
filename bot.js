@@ -10,7 +10,7 @@ const token = "1647467570:AAFOOsYoHOKICP6PoWz0iF201pCnRaDjsak";
 const bot = new Telegraf(token)
 
 const _setting = { useUnifiedTopology: true,connectTimeoutMS: 30000,keepAlive: 1 };
-const _url = 'mongodb://root:password@mongo:27019';
+const _url = 'mongodb://root:password@mongo1:27019';
 const _DB = "WabboBot";
 const _WallpaperTable = 'WallpaperPosted';
 
