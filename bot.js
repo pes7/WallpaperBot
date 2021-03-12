@@ -11,13 +11,13 @@ const bot = new Telegraf(token)
 
 const _setting = { useUnifiedTopology: true,connectTimeoutMS: 30000,keepAlive: 1 };
 const _url = 'mongodb://root:password@mongor:27017/';
+//const _url = 'mongodb://root:password@localhost:27020/';
 const _DB = "WabboBot";
 const _WallpaperTable = 'WallpaperPosted';
 
 var startedThread = 0;
 const _time_out = 120;
 const _pass = 8912;
-var runtime = 0;
 
 class Wallpaper {
   static insertWallpaper(wallpaper,clb = ()=>{}) {
@@ -110,14 +110,9 @@ function cycle(wallpepers, ctx){
         if(resp === null){
           Wallpaper.insertWallpaper(o);
           var img = o.url_image;
-          var thm = o.url_thumb;
-          var id = o.id
-          bot.telegram.sendPhoto("@animeWallpappe",thm,{
-            caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nSource: ${img}`,
+          bot.telegram.sendPhoto("@animeWallpappe",img,{
+            caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nDonwload: ${img}`
           });
-          //bot.telegram.sendMessage("@animeWallpappe","");
-          //ctx.reply(o.url_image)
-          //cycle(wallpepers, ctx)
         }else{
           cycle(wallpepers, ctx)
         }
