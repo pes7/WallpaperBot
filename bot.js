@@ -101,7 +101,7 @@ bot.command("test", (ctx)=>{
 })
 
 bot.use(arGs());
-function cycle(wallpepers, ctx){
+function cycle(wallpepers){
   if(wallpepers.length > 0)
   {
     var o = wallpepers.pop();
@@ -116,35 +116,36 @@ function cycle(wallpepers, ctx){
             });
           }catch(e){console.log(e)}
         }else{
-          cycle(wallpepers, ctx)
+          cycle(wallpepers)
         }
       })
-    }else{cycle(wallpepers, ctx)}
+    }else{cycle(wallpepers)}
   }
 }
 
 bot.command("bot_start", (ctx) => {
-  var pass = ctx.state.command.args[0];
-  if(pass == _pass){
-    if(startedThread == 0){
-      var _time_pass = 0;
-      ctx.reply('Bot started!');
-      startedThread = setInterval(()=>{
-        _time_pass++;
-        if(_time_pass >= _time_out){
-          _time_pass = 0;
-          request('https://wall.alphacoders.com/api2.0/get.php?auth=17900fc9b6f655f9d9e39a96a256fcd2&method=random&info_level=2&category=Anime', { json: true }, (err, res, body) => {
-            if (err) { return console.log(err); }
+  start()
+})
+
+function start(){
+  if(startedThread == 0){
+    var _time_pass = 0;
+    console.log('Bot started!');
+    startedThread = setInterval(()=>{
+      _time_pass++;
+      if(_time_pass >= _time_out){
+        _time_pass = 0;
+        request('https://wall.alphacoders.com/api2.0/get.php?auth=17900fc9b6f655f9d9e39a96a256fcd2&method=random&info_level=2&category=Anime', { json: true }, (err, res, body) => {
+          if (err) { return console.log(err); }
             if (body.success == true)
               {
-                cycle(body.wallpapers, ctx);
+                cycle(body.wallpapers);
               }
-            });
-        }
-      },1000)
-    }
-  }else{ctx.reply('Auch error!');}
-})
+          });
+      }
+    },1000)
+  }
+}
 
 bot.command("bot_stop", (ctx) =>{
   var pass = ctx.state.command.args[0];
@@ -158,6 +159,7 @@ bot.command("bot_stop", (ctx) =>{
 
 dbWork.createDBandTABLE();
 bot.launch()
+start()
 
 // Enable graceful stop
 process.once('SIGINT', () => bot.stop('SIGINT'))
