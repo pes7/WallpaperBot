@@ -6,7 +6,7 @@ const request = require('request');
 
 const _DEBUG = true;
 
-const token = "1647467570:AAFOOsYoHOKICP6PoWz0iF201pCnRaDjsak";
+const token = process.env.TOKEN;
 const bot = new Telegraf(token)
 
 const _setting = { useUnifiedTopology: true,connectTimeoutMS: 30000,keepAlive: 1 };
@@ -110,11 +110,9 @@ function cycle(wallpepers){
         if(resp === null){
           Wallpaper.insertWallpaper(o);
           var img = o.url_image;
-          try{
             bot.telegram.sendPhoto("@animeWallpappe",img,{
               caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nDonwload: ${img}`
             });
-          }catch(e){console.log(e)}
         }else{
           cycle(wallpepers)
         }
@@ -122,10 +120,6 @@ function cycle(wallpepers){
     }else{cycle(wallpepers)}
   }
 }
-
-bot.command("bot_start", (ctx) => {
-  start()
-})
 
 function start(){
   if(startedThread == 0){
@@ -155,12 +149,6 @@ bot.command("bot_stop", (ctx) =>{
       ctx.reply('Bot stoped!');
     }
   }else{ctx.reply('Auch error!');}
-})
-
-bot.on('text', (ctx) => {
-  if(ctx.message.text == "Something went wrong, please try again."){
-    ctx.deleteMessage(ctx.message.message_id);
-  }
 })
 
 dbWork.createDBandTABLE();
