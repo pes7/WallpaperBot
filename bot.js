@@ -110,9 +110,14 @@ function cycle(wallpepers, ctx){
         if(resp === null){
           Wallpaper.insertWallpaper(o);
           var img = o.url_image;
-          bot.telegram.sendPhoto("@animeWallpappe",img,{
-            caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nDonwload: ${img}`
-          });
+          try {
+            bot.telegram.sendPhoto("@animeWallpappe",img,{
+              caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nDonwload: ${img}`
+            });
+          }
+          catch (e) {
+            logMyErrors(e);
+          }
         }else{
           cycle(wallpepers, ctx)
         }
@@ -129,7 +134,6 @@ bot.command("bot_start", (ctx) => {
       ctx.reply('Bot started!');
       startedThread = setInterval(()=>{
         _time_pass++;
-        runtime++;
         if(_time_pass >= _time_out){
           _time_pass = 0;
           request('https://wall.alphacoders.com/api2.0/get.php?auth=17900fc9b6f655f9d9e39a96a256fcd2&method=random&info_level=2&category=Anime', { json: true }, (err, res, body) => {
