@@ -157,6 +157,12 @@ bot.command("bot_stop", (ctx) =>{
   }else{ctx.reply('Auch error!');}
 })
 
+bot.on('text', (ctx) => {
+  if(ctx.message.text == "Something went wrong, please try again."){
+    ctx.deleteMessage(ctx.message.message_id);
+  }
+})
+
 dbWork.createDBandTABLE();
 bot.launch()
 start()
