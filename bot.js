@@ -110,14 +110,11 @@ function cycle(wallpepers, ctx){
         if(resp === null){
           Wallpaper.insertWallpaper(o);
           var img = o.url_image;
-          try {
+          try{
             bot.telegram.sendPhoto("@animeWallpappe",img,{
               caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nDonwload: ${img}`
             });
-          }
-          catch (e) {
-            logMyErrors(e);
-          }
+          }catch(e){console.log(e)}
         }else{
           cycle(wallpepers, ctx)
         }
