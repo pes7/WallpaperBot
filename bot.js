@@ -111,7 +111,7 @@ function cycle(wallpepers){
           Wallpaper.insertWallpaper(o);
           var img = o.url_image;
             bot.telegram.sendPhoto("@animeWallpappe",img,{
-              caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nDonwload: ${img}`
+              caption:`Resolution: ${o.height}x${o.width}\nType: ${o.file_type.toUpperCase()}\nDownload: ${img}`
             });
         }else{
           cycle(wallpepers)
